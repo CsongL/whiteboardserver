@@ -48,8 +48,6 @@ public class ClientFrame extends JFrame {
                     jTextArea1.append("Successfully Connect..\n");
                     while(true){
                         String message = bufferedReader.readLine();
-                        System.out.println("what");
-                        System.out.println(message);
                         handleMessage(message);
                     }
                 } catch (UnknownHostException e) {
@@ -63,11 +61,10 @@ public class ClientFrame extends JFrame {
     public void handleMessage(String message) throws IOException, ClassNotFoundException {
         if(message.indexOf("{") != -1 && message.indexOf("\"")!=-1){
             Shape s = JSON.parseObject(message, Shape.class);
-            System.out.println(s.toString());
             s.draw((Graphics2D) g);
         }else{
-            System.out.println("why");
             jTextArea1.append(message+"\n");
+            jTextArea1.selectAll();
         }
     }
 
@@ -110,7 +107,7 @@ public class ClientFrame extends JFrame {
                 jTextArea2.setText("");
                 jTextArea1.append("Me:"+text + "\n");
                 jTextArea1.selectAll(); //put the scroll in the last position
-                pw.println("Message:"+text+"\n");
+                pw.println("Message:"+text);
             }
         });
         jpRight.add(submitButton);
