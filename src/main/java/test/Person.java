@@ -3,12 +3,9 @@ package test;
 /**
  * @Author: SongLin Chang
  * @Description: TODO
- * @Date: Created in 12:12 2021/5/17
+ * @Date: Created in 21:26 2021/5/17
  */
-import java.io.Serializable;
-
-class Person implements Serializable{
-
+public class Person {
     private static final long serialVersionUID = 1L;
     private int id;
     private String name;

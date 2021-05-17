@@ -4,7 +4,7 @@ import client.SerializeUtils;
 
 import java.awt.*;
 import java.io.*;
-
+import com.alibaba.fastjson.JSON;
 /**
  * @Author: SongLin Chang
  * @Description: TODO
@@ -12,15 +12,10 @@ import java.io.*;
  */
 public class test {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        Color color = Color.black;
-        String colorString = color.toString();
-        Color color1 = new Color(color.getRGB());
-        System.out.println(color1);
-        Person person = new Person(1,"CS",23,"S");
-        String personInfo = SerializeUtils.serialize(person);
-        System.out.println(personInfo);
-        Person person1 =(Person) SerializeUtils.serializeToObject(personInfo);
-        System.out.println(person1.toString());
-
+        Person person12 = new Person(1,"CS",23,"S");
+        String personJson = JSON.toJSONString(person12);
+        System.out.println("text"+personJson);
+        Person person2 = JSON.parseObject(personJson, Person.class);
+        System.out.println(person2.toString());
     }
 }

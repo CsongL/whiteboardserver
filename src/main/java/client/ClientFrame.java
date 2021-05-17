@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import com.alibaba.fastjson.JSON;
 
 /**
  * @Author: SongLin Chang
@@ -30,6 +31,7 @@ public class ClientFrame extends JFrame {
     }
     @Override
     public void paint(Graphics g) {
+        System.out.println("paint");
         super.paint(g);
         for(int i =0; i <shapeList.size(); i++){
             Shape s = shapeList.get(i);
@@ -38,7 +40,6 @@ public class ClientFrame extends JFrame {
     }
     public void setClient(String address, int port){
                 try{
-                    System.out.println("hh");
                     Socket socket = new Socket(address, port);
                     InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
                     bufferedReader = new BufferedReader(inputStreamReader);
@@ -47,7 +48,8 @@ public class ClientFrame extends JFrame {
                     jTextArea1.append("Successfully Connect..\n");
                     while(true){
                         String message = bufferedReader.readLine();
-                        jTextArea1.append(message + "\n");
+                        System.out.println("what");
+                        System.out.println(message == "");
                         handleMessage(message);
                     }
                 } catch (UnknownHostException e) {
@@ -59,15 +61,13 @@ public class ClientFrame extends JFrame {
         };
 
     public void handleMessage(String message) throws IOException, ClassNotFoundException {
-        if(message.indexOf(" ") == -1){
-            System.out.println(message);
-            Shape s = (Shape) SerializeUtils.serializeToObject(message);
+        if(message.indexOf("{") != -1 && message.indexOf("\"")!=-1){
+            Shape s = JSON.parseObject(message, Shape.class);
             s.draw((Graphics2D) g);
         }else{
-            int typeIndex = message.indexOf(" ");
-            jTextArea1.append(message.substring(typeIndex+1));
+            System.out.println("why");
+            jTextArea1.append(message);
         }
-
     }
 
     public void showFrame(){
@@ -92,14 +92,14 @@ public class ClientFrame extends JFrame {
         jTextArea1.setEditable(false);
 
         JScrollPane jScrollPane1 = new JScrollPane(jTextArea1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        jpRight.add(jTextArea1);
+        jpRight.add(jScrollPane1);
 
         jTextArea2 = new JTextArea(9, 40);
         jTextArea2.setLineWrap(true);
         jTextArea2.setWrapStyleWord(true);
         jTextArea2.setEditable(true);
         JScrollPane jScrollPane2 = new JScrollPane(jTextArea2, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        jpRight.add(jTextArea2);
+        jpRight.add(jScrollPane2);
 
         JButton submitButton = new JButton("Submite");
         submitButton.addActionListener(new ActionListener() {
@@ -107,10 +107,9 @@ public class ClientFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String text = jTextArea2.getText();
                 jTextArea2.setText("");
-                jTextArea1.append(text + "\n");
-                System.out.println(text);
-                pw.println("Message "+text);
-                pw.flush();
+                jTextArea1.append("Me:"+text + "\n");
+                jTextArea1.selectAll(); //put the scroll in the last position
+                pw.println("Message:"+text+"\n");
             }
         });
         jpRight.add(submitButton);
