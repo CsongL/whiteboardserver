@@ -11,8 +11,6 @@ import java.net.Socket;
 public class ServerThread extends Thread{
     public Integer socketNumber;
     public Socket socket;
-    public DataInputStream dataInputStream;
-    public DataOutputStream dataOutputStream;
     public PrintWriter pw;
     public BufferedReader bufferedReader;
     public String userName;
@@ -35,7 +33,6 @@ public class ServerThread extends Thread{
         try{
             //  get the input stream
             while((socketMessage = bufferedReader.readLine())!=null){
-                System.out.println(socketMessage);
                 for(int i =0; i< MyServer.serverList.size(); i++){
                     ServerThread st = MyServer.serverList.get(i);
                     if(this != st) {

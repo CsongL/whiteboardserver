@@ -17,7 +17,6 @@ import java.util.Map;
  */
 public class MyServer {
     public ServerSocket serverSocket;
-    //  store the serverThread and corresponding user's name
     public static ArrayList<ServerThread> serverList;
     private Integer socketNumber = 0;
 
@@ -32,13 +31,6 @@ public class MyServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("成功连接");
                 socketNumber++;
-//                InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
-//                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-//                if(bufferedReader.readLine()==null){
-//                    System.out.println("null");
-//                }
-//                String username = bufferedReader.readLine();
-//                System.out.println(username);
                 ServerThread serverThread = new ServerThread(socket, socketNumber, "text");
                 serverList.add(serverThread);
                 serverThread.start();
