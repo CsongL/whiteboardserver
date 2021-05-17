@@ -89,22 +89,6 @@ public class DrawListener extends MouseAdapter implements ActionListener {
             shapeList.add(s);
             pw.println(JSON.toJSONString(s));
         }
-//        if(str.equals("Pencil")){
-//            System.out.println("pencil");
-//            try {
-//                pw.println(SerializeUtils.serialize(null));
-//            } catch (IOException ioException) {
-//                ioException.printStackTrace();
-//            }
-//            for(int i =0; i<pencileList.size(); i++){
-//                try {
-//                    pw.println(SerializeUtils.serialize(pencileList.get(i)));
-//                } catch (IOException ioException) {
-//                    ioException.printStackTrace();
-//                }
-//            }
-//        }
-
     }
     public void mouseDragged(MouseEvent e){
         x3 = e.getX();

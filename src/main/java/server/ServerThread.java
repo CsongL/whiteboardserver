@@ -2,6 +2,7 @@ package server;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  * @Author: SongLin Chang
@@ -15,6 +16,7 @@ public class ServerThread extends Thread{
     public BufferedReader bufferedReader;
     public String userName;
     public String socketMessage;
+    public ArrayList<String> shapeString = new ArrayList<String>();
 
     public ServerThread(Socket socket, Integer socketNumber, String userName){
         this.socket = socket;
@@ -27,12 +29,33 @@ public class ServerThread extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        //            if(MyServer.serverList.size()!=1){
+//                System.out.println("text");
+//                ServerThread firstThread = MyServer.serverList.get(0);
+//                PrintWriter pw = firstThread.getPw();
+//                ArrayList<String> arrayList= firstThread.getShapeString();
+//                for(int i=0; i<arrayList.size();i++){
+//                    System.out.println(arrayList.get(i));
+//                    pw.println(arrayList.get(i));
+//                }
+//            }
     }
+
+    public PrintWriter getPw() {
+        return pw;
+    }
+
+    public ArrayList<String> getShapeString() {
+        return shapeString;
+    }
+
     public void run() {
         try{
             //  get the input stream
             while((socketMessage = bufferedReader.readLine())!=null){
+                if(socketMessage.indexOf("{") != -1 && socketMessage.indexOf("\"")!=-1) {
+                    shapeString.add(socketMessage);
+                }
                 for(int i =0; i< MyServer.serverList.size(); i++){
                     ServerThread st = MyServer.serverList.get(i);
                     if(this != st) {

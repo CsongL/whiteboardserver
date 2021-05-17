@@ -29,6 +29,7 @@ public class ClientFrame extends JFrame {
        ClientFrame clientFrame = new ClientFrame();
        clientFrame.setClient("localhost", 1234);
     }
+
     @Override
     public void paint(Graphics g) {
         System.out.println("paint");
@@ -62,6 +63,7 @@ public class ClientFrame extends JFrame {
         if(message.indexOf("{") != -1 && message.indexOf("\"")!=-1){
             Shape s = JSON.parseObject(message, Shape.class);
             s.draw((Graphics2D) g);
+            shapeList.add(s);
         }else{
             jTextArea1.append(message+"\n");
             jTextArea1.selectAll();
@@ -155,7 +157,12 @@ public class ClientFrame extends JFrame {
         buttonBoard.add(colorButton);
 
 
-        jpLeft.add(paintBoard, BorderLayout.CENTER);
+        DrawSpace drawSpace = new DrawSpace();
+        JPanel ds = drawSpace.createDrawSpace();
+        ds.setPreferredSize(new Dimension(400, 500));
+        ds.setBackground(Color.white);
+//        jpLeft.add(paintBoard, BorderLayout.CENTER);
+        jpLeft.add(ds, BorderLayout.CENTER);
         jpLeft.add(buttonBoard, BorderLayout.WEST);
 
         jFrame.add(jpLeft);
@@ -163,13 +170,29 @@ public class ClientFrame extends JFrame {
 
         jFrame.setVisible(true);
 
+        ds.addMouseMotionListener(drawListener);
+        ds.addMouseListener(drawListener);
+//        paintBoard.addMouseMotionListener(drawListener);
+//        paintBoard.addMouseListener(drawListener);
 
-        paintBoard.addMouseMotionListener(drawListener);
-        paintBoard.addMouseListener(drawListener);
-
-        g = paintBoard.getGraphics();
+//        g = paintBoard.getGraphics();
+        g = ds.getGraphics();
         drawListener.setG(g, pw);
         shapeList = drawListener.getShapeList();
     }
-
+    public class DrawSpace extends JPanel{
+        public void paint(Graphics g){
+            super.paint(g);
+            for(int i=0; i<shapeList.size(); i++){
+                Shape s =shapeList.get(i);
+                s.draw((Graphics2D) g);
+            }
+        }
+        public JPanel createDrawSpace(){
+            JPanel drawSpace = new DrawSpace();
+            drawSpace.setPreferredSize(new Dimension(400, 500));
+            drawSpace.setBackground(Color.white);
+            return drawSpace;
+        }
+    }
 }
