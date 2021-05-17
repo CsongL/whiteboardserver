@@ -16,13 +16,14 @@ public class Shape implements Serializable {
     private String type;
     private Color color;
 
-    public Shape(int x1, int y1, int x2, int y2, Color color, String type){
+    public Shape(int x1, int y1, int x2, int y2, Color color, String type, String text){
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
         this.color = color;
         this.type = type;
+        this.text = text;
     }
     public Shape(int x1, int y1, String text, String type, Color color){
         this.x1  = x1;
@@ -67,6 +68,7 @@ public class Shape implements Serializable {
         }
         if(type.equals("Text")){
             g.setColor(color);
+            System.out.println(this);
             g.drawString(text, x1, y1);
         }
     }

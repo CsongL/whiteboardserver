@@ -6,11 +6,10 @@ package test;
  * @Date: Created in 21:26 2021/5/17
  */
 public class Person {
-    private static final long serialVersionUID = 1L;
     private int id;
     private String name;
     private int age;
-    private transient String sex;
+    private String sex;
 
     public Person(int id, String name, int age,String sex) {
         super();

@@ -59,25 +59,25 @@ public class DrawListener extends MouseAdapter implements ActionListener {
         x2 = e.getX();
         y2 = e.getY();
         if(str.equals("Line")){
-            Shape s = new Shape(x1, y1, x2, y2,color, "Line");
+            Shape s = new Shape(x1, y1, x2, y2,color, "Line", null);
             s.draw(g2);
             shapeList.add(s);
             pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Rect")){
-            Shape s = new Shape(x1,y1, x2,y2,color,"Rect");
+            Shape s = new Shape(x1,y1, x2,y2,color,"Rect", null);
             s.draw(g2);
             shapeList.add(s);
             pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Oval")){
-            Shape s = new Shape(x1,y1,x2,y2,color,"Oval");
+            Shape s = new Shape(x1,y1,x2,y2,color,"Oval", null);
             s.draw(g2);
             shapeList.add(s);
             pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Circle")){
-            Shape s = new Shape(x1, y1, x2, y2, color, "Circle");
+            Shape s = new Shape(x1, y1, x2, y2, color, "Circle", null);
             s.draw(g2);
             shapeList.add(s);
             pw.println(JSON.toJSONString(s));
@@ -110,7 +110,7 @@ public class DrawListener extends MouseAdapter implements ActionListener {
         x3 = e.getX();
         y3 = e.getY();
         if(str.equals("Pencil")){
-            Shape s = new Shape(ex, ey, x3, y3, color, "Pencil");
+            Shape s = new Shape(ex, ey, x3, y3, color, "Pencil",null);
             s.draw(g2);
             shapeList.add(s);
             pw.println(JSON.toJSONString(s));
