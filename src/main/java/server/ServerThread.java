@@ -46,10 +46,16 @@ public class ServerThread extends Thread{
                     MyServer.shapeString.add(socketMessage);
                 }
                 if(firstFlag){
+                    if(socketMessage.indexOf("InitialName:")!=-1){
+                        this.userName = socketMessage.substring(socketMessage.indexOf(":")+1);
+                        System.out.println(this.userName);
+                    }
                     for(int i=0; i < MyServer.shapeString.size(); i++){
                         this.pw.println(MyServer.shapeString.get(i));
                         this.pw.flush();
                     }
+                    firstFlag = false;
+                    continue;
                 }
                 for(int i =0; i< MyServer.serverList.size(); i++){
                     ServerThread st = MyServer.serverList.get(i);

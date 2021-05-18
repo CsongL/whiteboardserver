@@ -30,7 +30,7 @@ public class ClientFrame extends JFrame {
 
     public static void main(String[] arguments){
        ClientFrame clientFrame = new ClientFrame();
-       clientFrame.setClient("localhost", 1234);
+       clientFrame.setClient("localhost", 1234, "Cai Meng");
     }
 
     @Override
@@ -42,17 +42,15 @@ public class ClientFrame extends JFrame {
             s.draw((Graphics2D) g);
         }
     }
-    public void setClient(String address, int port){
+    public void setClient(String address, int port, String name){
                 try{
                     Socket socket = new Socket(address, port);
                     InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
                     bufferedReader = new BufferedReader(inputStreamReader);
                     pw = new PrintWriter(socket.getOutputStream(), true);
-//                    String firstMessage = bufferedReader.readLine();
-//                    System.out.println(firstMessage);
                     showFrame();
                     jTextArea1.append("Successfully Connect..\n");
-                    pw.println("this");
+                    pw.println("InitialName:"+name);  //  this is important can not be changed because it is associated with whiteboard shown to others
                     while(true){
                         String message = bufferedReader.readLine();
                         handleMessage(message);

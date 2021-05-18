@@ -13,6 +13,5 @@ public class Client {
     public static void main(String[] args) {
         ClientFrame clientFrame = new ClientFrame();
         clientFrame.showFrame();
-        clientFrame.setClient("localhost", 1234);
     }
 }
