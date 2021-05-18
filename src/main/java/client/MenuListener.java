@@ -121,6 +121,7 @@ public class MenuListener implements ActionListener {
                 graphics2.drawImage(image, 0, 0, null);
                 graphics2.dispose();
                 ImageIO.write(myImage, "jpg", file);
+                JOptionPane.showMessageDialog(jFrame, "Successfully save");
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }

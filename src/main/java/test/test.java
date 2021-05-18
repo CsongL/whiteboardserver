@@ -13,7 +13,9 @@ import com.alibaba.fastjson.JSON;
  * @Date: Created in 8:49 2021/5/16
  */
 public class test {
+    private static int totalNumber = 0;
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+        System.out.println(totalNumber++);
         Person person12 = new Person(1,"CS",23,"S");
         String personJson = JSON.toJSONString(person12);
         System.out.println("text"+personJson);

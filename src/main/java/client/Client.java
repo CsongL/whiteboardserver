@@ -12,6 +12,6 @@ import java.net.UnknownHostException;
 public class Client {
     public static void main(String[] args) {
         ClientFrame clientFrame = new ClientFrame();
-        clientFrame.showFrame();
+        clientFrame.setClient(args[0], Integer.parseInt(args[1]), args[2]);
     }
 }

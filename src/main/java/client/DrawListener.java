@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import com.alibaba.fastjson.JSON;
 
@@ -22,7 +23,6 @@ public class DrawListener extends MouseAdapter implements ActionListener {
     private String str = "Line";
     private Color color = Color.BLACK;
     private ArrayList<Shape> shapeList = new ArrayList<Shape>();
-    private ArrayList<Shape> pencileList = new ArrayList<Shape>();
     private PrintWriter pw;
 
     public void setG(Graphics g, PrintWriter pw){
@@ -96,6 +96,18 @@ public class DrawListener extends MouseAdapter implements ActionListener {
     public void mouseDragged(MouseEvent e){
         x3 = e.getX();
         y3 = e.getY();
+        if(str.equals("Brush")){
+            Shape s= new Shape(ex, ey, x3, y3,color, "Brush", null);
+            s.draw(g2);
+            shapeList.add(s);
+            pw.println(JSON.toJSONString(s));
+        }
+        if(str.equals("Easier")){
+            Shape s= new Shape(ex, ey, x3, y3,Color.white, "Easier", null);
+            s.draw(g2);
+            shapeList.add(s);
+            pw.println(JSON.toJSONString(s));
+        }
         if(str.equals("Pencil")){
             Shape s = new Shape(ex, ey, x3, y3, color, "Pencil",null);
             s.draw(g2);

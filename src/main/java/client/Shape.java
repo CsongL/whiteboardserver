@@ -42,6 +42,12 @@ public class Shape implements Serializable {
             g.setColor(color);
             g.drawLine(x1,y1, x2, y2);
         }
+        if(type.equals("Brush") || type.equals("Easier")){
+            g.setStroke(new BasicStroke(8));
+            g.setColor(color);
+            g.drawLine(x1,y1,x2,y2);
+            g.setStroke(new BasicStroke(1));
+        }
         if(type.equals("Rect")){
             g.setColor(color);
             int beginPoint = Math.min(x1, x2);
@@ -56,7 +62,7 @@ public class Shape implements Serializable {
             int endPonint = Math.min(y1, y2);
             int width = Math.abs(x1-x2);
             int height = Math.abs(y1-y2);
-            g.drawRoundRect(beginPoint, endPonint, width, height, width, height);
+            g.drawRoundRect(beginPoint, endPonint, width, width, width, width);
         }
         if(type.equals("Oval")){
             g.setColor(color);

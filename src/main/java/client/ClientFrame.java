@@ -3,6 +3,7 @@ package client;
 import sun.security.provider.SHA;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,24 +28,17 @@ public class ClientFrame extends JFrame {
     private JTextArea jTextArea2;
     public static Graphics g;
     public static ArrayList<Shape> shapeList = new ArrayList<Shape>();
+    public static String textPaint;
     private PrintWriter pw;
     private BufferedReader bufferedReader;
     private String userName;
+    private  DrawListener drawListener = new DrawListener();
 
     public static void main(String[] arguments){
        ClientFrame clientFrame = new ClientFrame();
        clientFrame.setClient("localhost", 1234, "Cai Meng");
     }
 
-    @Override
-    public void paint(Graphics g) {
-        System.out.println("paint");
-        super.paint(g);
-        for(int i =0; i <shapeList.size(); i++){
-            Shape s = shapeList.get(i);
-            s.draw((Graphics2D) g);
-        }
-    }
     public void setClient(String address, int port, String name){
                 try{
                     Socket socket = new Socket(address, port);
@@ -82,7 +76,7 @@ public class ClientFrame extends JFrame {
 
     public void showFrame(){
         // add the listener
-        DrawListener drawListener = new DrawListener();
+
         MenuListener menuListener = new MenuListener();
         JFrame jFrame = new JFrame("WhiteBoard");
         jFrame.setSize(1000,500);
@@ -153,7 +147,7 @@ public class ClientFrame extends JFrame {
         JPanel buttonBoard = new JPanel();
         buttonBoard.setPreferredSize(new Dimension(80,0));
 
-        String[] buttonName = {"Line", "Rect", "Oval", "Circle","Pencil", "Text"};
+        String[] buttonName = {"Line", "Rect", "Oval", "Circle","Pencil","Brush","Easier"};
         JButton[] jButtons = new JButton[buttonName.length];
         for(int i =0; i <buttonName.length; i++){
             jButtons[i] = new JButton(buttonName[i]);
@@ -223,6 +217,28 @@ public class ClientFrame extends JFrame {
         }
         public void drawImages(BufferedImage image) {
             g.drawImage(image,0,0,null);
+        }
+    }
+    class TextFrame extends Frame{
+        public TextFrame(int screenX, int screenY){
+            super();
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            setSize(400,200);
+            setLocation(screenX+100, screenY+100);
+            setTitle("Text Message");
+
+            JPanel contentPanel = new JPanel();
+            contentPanel.setBorder(new EmptyBorder(5,5,5,5));
+            setContentPane(contentPanel);
+
+            JLabel wordLabel = new JLabel("Text");
+            JTextField wordTextField = new JTextField(10);
+            contentPanel.add(wordLabel);
+            contentPanel.add(wordTextField);
+            JButton submitButton = new JButton("type");
+            submitButton.setBounds(100,100,100,100);
+            contentPanel.add(submitButton);
+            submitButton.addActionListener(drawListener);
         }
     }
 }
