@@ -16,13 +16,14 @@ public class Shape implements Serializable {
     private String type;
     private Color color;
 
-    public Shape(int x1, int y1, int x2, int y2, Color color, String type){
+    public Shape(int x1, int y1, int x2, int y2, Color color, String type, String text){
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
         this.y2 = y2;
         this.color = color;
         this.type = type;
+        this.text = text;
     }
     public Shape(int x1, int y1, String text, String type, Color color){
         this.x1  = x1;
@@ -41,6 +42,12 @@ public class Shape implements Serializable {
             g.setColor(color);
             g.drawLine(x1,y1, x2, y2);
         }
+        if(type.equals("Brush") || type.equals("Easier")){
+            g.setStroke(new BasicStroke(8));
+            g.setColor(color);
+            g.drawLine(x1,y1,x2,y2);
+            g.setStroke(new BasicStroke(1));
+        }
         if(type.equals("Rect")){
             g.setColor(color);
             int beginPoint = Math.min(x1, x2);
@@ -55,7 +62,7 @@ public class Shape implements Serializable {
             int endPonint = Math.min(y1, y2);
             int width = Math.abs(x1-x2);
             int height = Math.abs(y1-y2);
-            g.drawRoundRect(beginPoint, endPonint, width, height, width, height);
+            g.drawRoundRect(beginPoint, endPonint, width, width, width, width);
         }
         if(type.equals("Oval")){
             g.setColor(color);
@@ -67,6 +74,7 @@ public class Shape implements Serializable {
         }
         if(type.equals("Text")){
             g.setColor(color);
+            System.out.println(this);
             g.drawString(text, x1, y1);
         }
     }

@@ -3,17 +3,13 @@ package test;
 /**
  * @Author: SongLin Chang
  * @Description: TODO
- * @Date: Created in 12:12 2021/5/17
+ * @Date: Created in 21:26 2021/5/17
  */
-import java.io.Serializable;
-
-class Person implements Serializable{
-
-    private static final long serialVersionUID = 1L;
+public class Person {
     private int id;
     private String name;
     private int age;
-    private transient String sex;
+    private String sex;
 
     public Person(int id, String name, int age,String sex) {
         super();

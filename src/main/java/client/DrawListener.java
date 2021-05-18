@@ -5,7 +5,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
+
+import com.alibaba.fastjson.JSON;
 
 /**
  * @Author: SongLin Chang
@@ -19,11 +24,13 @@ public class DrawListener extends MouseAdapter implements ActionListener {
     private Color color = Color.BLACK;
     private ArrayList<Shape> shapeList = new ArrayList<Shape>();
     private PrintWriter pw;
+
     public void setG(Graphics g, PrintWriter pw){
         g2 =(Graphics2D) g;
         this.pw = pw;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
+
     public void setColor(Color color) {
         this.color = color;
         System.out.println(this.color);
@@ -31,6 +38,7 @@ public class DrawListener extends MouseAdapter implements ActionListener {
     public ArrayList<Shape> getShapeList(){
         return shapeList;
     }
+
     public void actionPerformed(ActionEvent e){
         JButton button = (JButton) e.getSource();
         str = button.getText();
@@ -42,8 +50,8 @@ public class DrawListener extends MouseAdapter implements ActionListener {
     public void mousePressed(MouseEvent e){
         x1 = e.getX();
         y1 = e.getY();
-        ex = y1;
-        ey = y1;
+        ex = e.getX();
+        ey = e.getY();
         g2.setColor(color);
     }
     public void mouseMoved(MouseEvent e){
@@ -54,71 +62,57 @@ public class DrawListener extends MouseAdapter implements ActionListener {
         x2 = e.getX();
         y2 = e.getY();
         if(str.equals("Line")){
-            Shape s = new Shape(x1, y1, x2, y2,color, "Line");
+            Shape s = new Shape(x1, y1, x2, y2,color, "Line", null);
             s.draw(g2);
             shapeList.add(s);
-//            pw.println("Line,"+x1+","+y1+","+x2+","+y2+","+color.getRGB());
-            try {
-                pw.println(SerializeUtils.serialize(s));
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Rect")){
-            Shape s = new Shape(x1,y1, x2,y2,color,"Rect");
+            Shape s = new Shape(x1,y1, x2,y2,color,"Rect", null);
             s.draw(g2);
             shapeList.add(s);
-            try{
-                pw.println(SerializeUtils.serialize(s));
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Oval")){
-            Shape s = new Shape(x1,y1,x2,y2,color,"Oval");
+            Shape s = new Shape(x1,y1,x2,y2,color,"Oval", null);
             s.draw(g2);
             shapeList.add(s);
-            try{
-                pw.println(SerializeUtils.serialize(s));
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Circle")){
-            Shape s = new Shape(x1, y1, x2, y2, color, "Circle");
+            Shape s = new Shape(x1, y1, x2, y2, color, "Circle", null);
             s.draw(g2);
             shapeList.add(s);
-            try {
-                pw.println(SerializeUtils.serialize(s));
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-
+            pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Text")){
             String text = "Hello World";
             Shape s = new Shape(x1,y1,text,"Text", color);
             s.draw(g2);
             shapeList.add(s);
-            try{
-                pw.println(SerializeUtils.serialize(s));
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            pw.println(JSON.toJSONString(s));
         }
     }
     public void mouseDragged(MouseEvent e){
         x3 = e.getX();
         y3 = e.getY();
-        if(str.equals("Pencil")){
-            Shape s = new Shape(ex, ey, x3, y3, color, "Pencil");
+        if(str.equals("Brush")){
+            Shape s= new Shape(ex, ey, x3, y3,color, "Brush", null);
             s.draw(g2);
             shapeList.add(s);
-            try{
-                pw.println(SerializeUtils.serialize(s));
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            pw.println(JSON.toJSONString(s));
+        }
+        if(str.equals("Easier")){
+            Shape s= new Shape(ex, ey, x3, y3,Color.white, "Easier", null);
+            s.draw(g2);
+            shapeList.add(s);
+            pw.println(JSON.toJSONString(s));
+        }
+        if(str.equals("Pencil")){
+            Shape s = new Shape(ex, ey, x3, y3, color, "Pencil",null);
+            s.draw(g2);
+            shapeList.add(s);
+            pw.println(JSON.toJSONString(s));
         }
         ex = x3;
         ey = y3;
