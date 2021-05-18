@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -24,10 +25,11 @@ import com.alibaba.fastjson.JSON;
 public class ClientFrame extends JFrame {
     private static JTextArea jTextArea1;
     private JTextArea jTextArea2;
-    private Graphics g;
+    public static Graphics g;
     public static ArrayList<Shape> shapeList = new ArrayList<Shape>();
     private PrintWriter pw;
     private BufferedReader bufferedReader;
+    private String userName;
 
     public static void main(String[] arguments){
        ClientFrame clientFrame = new ClientFrame();
@@ -187,7 +189,9 @@ public class ClientFrame extends JFrame {
         JPanel ds = drawSpace.createDrawSpace();
         ds.setPreferredSize(new Dimension(400, 500));
         ds.setBackground(Color.white);
+        // transmit the parameter
         menuListener.setDrawSpace(ds);
+        menuListener.setjFrame(jFrame);
 
         jpLeft.add(ds, BorderLayout.CENTER);
         jpLeft.add(buttonBoard, BorderLayout.WEST);
@@ -216,6 +220,9 @@ public class ClientFrame extends JFrame {
             drawSpace.setPreferredSize(new Dimension(400, 500));
             drawSpace.setBackground(Color.white);
             return drawSpace;
+        }
+        public void drawImages(BufferedImage image) {
+            g.drawImage(image,0,0,null);
         }
     }
 }

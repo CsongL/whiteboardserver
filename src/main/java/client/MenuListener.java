@@ -1,8 +1,11 @@
 package client;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -13,9 +16,14 @@ import java.util.ArrayList;
  */
 public class MenuListener implements ActionListener {
     private JPanel drawSpace;
+    private JFrame jFrame;
 
     public void setDrawSpace(JPanel drawSpace) {
         this.drawSpace = drawSpace;
+    }
+
+    public void setjFrame(JFrame jFrame) {
+        this.jFrame = jFrame;
     }
 
     @Override
@@ -26,7 +34,7 @@ public class MenuListener implements ActionListener {
         Object[] options = {"Yes", "No"};
         // Create a blank drawsplace
         if("New".equals(command)){
-            int value = JOptionPane.showConfirmDialog(null,"Do you want to save the current file?", "Warning",0,JOptionPane.QUESTION_MESSAGE);
+            int value = JOptionPane.showConfirmDialog(jFrame,"Do you want to save the current file?", "Warning",0,JOptionPane.QUESTION_MESSAGE);
             if(value==0){
                 saveFile();
             }
@@ -37,19 +45,28 @@ public class MenuListener implements ActionListener {
         }
         // open a file
         if("Open".equals(command)){
-            int value = JOptionPane.showConfirmDialog(null,"Do you need to save the current file?","Warning",0,JOptionPane.QUESTION_MESSAGE);
+            int value = JOptionPane.showConfirmDialog(jFrame,"Do you want to save the current file?","Warning",0,JOptionPane.QUESTION_MESSAGE);
             if(value ==0){
                 saveFile();
             }
-            if(value ==1){
-                ClientFrame.shapeList.removeAll(ClientFrame.shapeList);
+            if(value==1){
+                openPic();
+            }
+        }
+        if("Save".equals(command)){
+            savePic();
+        }
+    }
+
+    public void openfile(){
+        ClientFrame.shapeList.removeAll(ClientFrame.shapeList);
                 drawSpace.repaint();
                 try{
                     JFileChooser chooser = new JFileChooser();
-                    chooser.showOpenDialog(null);
+                    chooser.showOpenDialog(jFrame);
                     File file = chooser.getSelectedFile();
                     if(file == null){
-                        JOptionPane.showMessageDialog(null,"Do not choose a file");
+                        JOptionPane.showMessageDialog(jFrame,"Do not choose a file");
                     } else{
                         FileInputStream fileInputStream = new FileInputStream(file);
                         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -69,11 +86,46 @@ public class MenuListener implements ActionListener {
                 } catch (ClassNotFoundException classNotFoundException) {
                     classNotFoundException.printStackTrace();
                 }
+    }
+    public void openPic()  {
+        JFileChooser chooser = new JFileChooser();
+        chooser.showSaveDialog(jFrame);
+        File file = chooser.getSelectedFile();
+        if(file==null){
+            JOptionPane.showMessageDialog(jFrame, "Do not choose a file");
+        } else{
+            try{
+                BufferedImage image = ImageIO.read(file);
+                ClientFrame.g.drawImage(image,0,0,null);
+            }catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         }
-        if("Save".equals(command)){
-            saveFile();
+
+    }
+    public void savePic() {
+        JFileChooser chooser = new JFileChooser();
+        chooser.showSaveDialog(jFrame);
+        File file = chooser.getSelectedFile();
+        if(file==null){
+            JOptionPane.showMessageDialog(jFrame, "Do not choose a file");
+        } else{
+            try {
+                Dimension iamgeSize = drawSpace.getSize();
+                BufferedImage image = new BufferedImage(iamgeSize.width, iamgeSize.height, BufferedImage.TYPE_INT_RGB);
+                Graphics2D graphics = image.createGraphics();
+                drawSpace.paint(graphics);
+                graphics.dispose();
+                BufferedImage myImage = new BufferedImage(iamgeSize.width, iamgeSize.height, BufferedImage.TYPE_INT_RGB);
+                Graphics graphics2 = myImage.getGraphics();
+                graphics2.drawImage(image, 0, 0, null);
+                graphics2.dispose();
+                ImageIO.write(myImage, "jpg", file);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
+
     }
     public void saveFile(){
         JFileChooser chooser = new JFileChooser();
@@ -81,7 +133,7 @@ public class MenuListener implements ActionListener {
         File file = chooser.getSelectedFile();
 
         if(file==null){
-            JOptionPane.showMessageDialog(null, "Do not choose a file");
+            JOptionPane.showMessageDialog(jFrame, "Do not choose a file");
         } else{
             try{
                 FileOutputStream fos = new FileOutputStream(file);
