@@ -1,5 +1,6 @@
 package server;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.ServerSocket;
@@ -15,7 +16,8 @@ import java.util.Map;
 public class MyServer {
     public ServerSocket serverSocket;
     public static ArrayList<ServerThread> serverList;
-    private Integer socketNumber = 0;
+    public static ArrayList<String> shapeString = new ArrayList<String>();
+    public static Integer socketNumber = 0;
 
     public MyServer(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -37,4 +39,11 @@ public class MyServer {
         }
     }
 
+    public Integer getSocketNumber() {
+        return socketNumber;
+    }
+
+    public void setSocketNumber(Integer socketNumber) {
+        this.socketNumber = socketNumber;
+    }
 }

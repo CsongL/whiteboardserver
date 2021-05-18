@@ -2,7 +2,9 @@ package server;
 
 import java.io.*;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @Author: SongLin Chang
@@ -16,7 +18,7 @@ public class ServerThread extends Thread{
     public BufferedReader bufferedReader;
     public String userName;
     public String socketMessage;
-    public ArrayList<String> shapeString = new ArrayList<String>();
+    public Boolean firstFlag = false;
 
     public ServerThread(Socket socket, Integer socketNumber, String userName){
         this.socket = socket;
@@ -29,24 +31,11 @@ public class ServerThread extends Thread{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //            if(MyServer.serverList.size()!=1){
-//                System.out.println("text");
-//                ServerThread firstThread = MyServer.serverList.get(0);
-//                PrintWriter pw = firstThread.getPw();
-//                ArrayList<String> arrayList= firstThread.getShapeString();
-//                for(int i=0; i<arrayList.size();i++){
-//                    System.out.println(arrayList.get(i));
-//                    pw.println(arrayList.get(i));
-//                }
-//            }
+        firstFlag = true;
     }
 
     public PrintWriter getPw() {
         return pw;
-    }
-
-    public ArrayList<String> getShapeString() {
-        return shapeString;
     }
 
     public void run() {
@@ -54,7 +43,13 @@ public class ServerThread extends Thread{
             //  get the input stream
             while((socketMessage = bufferedReader.readLine())!=null){
                 if(socketMessage.indexOf("{") != -1 && socketMessage.indexOf("\"")!=-1) {
-                    shapeString.add(socketMessage);
+                    MyServer.shapeString.add(socketMessage);
+                }
+                if(firstFlag){
+                    for(int i=0; i < MyServer.shapeString.size(); i++){
+                        this.pw.println(MyServer.shapeString.get(i));
+                        this.pw.flush();
+                    }
                 }
                 for(int i =0; i< MyServer.serverList.size(); i++){
                     ServerThread st = MyServer.serverList.get(i);
@@ -65,6 +60,27 @@ public class ServerThread extends Thread{
                 }
             }
         } catch (IOException e) {
+            for(int i=0; i<MyServer.serverList.size();i++){
+                ServerThread st = MyServer.serverList.get(i);
+                if(this == st){
+                    MyServer.serverList.remove(i);
+                    break;
+                }
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat();
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");
+            Date date = new Date();
+            System.out.println("Time：" + sdf.format(date)+";" + this.userName+" leaves the room");
+            for(int i =0; i< MyServer.serverList.size(); i++){
+                ServerThread st = MyServer.serverList.get(i);
+                st.pw.println(this.userName+" have leave the room");
+                st.pw.flush();
+
+            }
+            MyServer.socketNumber--;
+            if(MyServer.socketNumber ==0){
+                MyServer.shapeString.clear();
+            }
             e.printStackTrace();
         }
     }

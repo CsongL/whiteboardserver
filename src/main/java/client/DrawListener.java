@@ -5,7 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.alibaba.fastjson.JSON;
 
 /**
@@ -74,6 +77,10 @@ public class DrawListener extends MouseAdapter implements ActionListener {
             Shape s = new Shape(x1,y1,x2,y2,color,"Oval", null);
             s.draw(g2);
             shapeList.add(s);
+            SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");// a为am/pm的标记
+            Date date = new Date();// 获取当前时间
+            System.out.println("现在时间：" + sdf.format(date)); // 输出已经格式化的现在时间（24小时制）
             pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Circle")){

@@ -9,7 +9,10 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 import com.alibaba.fastjson.JSON;
 
 /**
@@ -45,8 +48,11 @@ public class ClientFrame extends JFrame {
                     InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
                     bufferedReader = new BufferedReader(inputStreamReader);
                     pw = new PrintWriter(socket.getOutputStream(), true);
+//                    String firstMessage = bufferedReader.readLine();
+//                    System.out.println(firstMessage);
                     showFrame();
                     jTextArea1.append("Successfully Connect..\n");
+                    pw.println("this");
                     while(true){
                         String message = bufferedReader.readLine();
                         handleMessage(message);
@@ -54,6 +60,7 @@ public class ClientFrame extends JFrame {
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 } catch (IOException | ClassNotFoundException e) {
+                    //  close the server there will be a problem
                     e.printStackTrace();
                 }
 
@@ -61,10 +68,12 @@ public class ClientFrame extends JFrame {
 
     public void handleMessage(String message) throws IOException, ClassNotFoundException {
         if(message.indexOf("{") != -1 && message.indexOf("\"")!=-1){
+            System.out.println(message);
             Shape s = JSON.parseObject(message, Shape.class);
             s.draw((Graphics2D) g);
             shapeList.add(s);
         }else{
+            System.out.println(message);
             jTextArea1.append(message+"\n");
             jTextArea1.selectAll();
         }
