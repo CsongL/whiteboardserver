@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -24,7 +25,7 @@ public class ClientFrame extends JFrame {
     private static JTextArea jTextArea1;
     private JTextArea jTextArea2;
     private Graphics g;
-    private ArrayList<Shape> shapeList = new ArrayList<Shape>();
+    public static ArrayList<Shape> shapeList = new ArrayList<Shape>();
     private PrintWriter pw;
     private BufferedReader bufferedReader;
 
@@ -80,6 +81,7 @@ public class ClientFrame extends JFrame {
     public void showFrame(){
         // add the listener
         DrawListener drawListener = new DrawListener();
+        MenuListener menuListener = new MenuListener();
         JFrame jFrame = new JFrame("WhiteBoard");
         jFrame.setSize(1000,500);
         jFrame.setDefaultCloseOperation(3);
@@ -88,6 +90,23 @@ public class ClientFrame extends JFrame {
 
         GridLayout grid =new GridLayout(1,2);
         jFrame.setLayout(grid);
+
+
+        //  Menu Bar
+        JMenuBar bar = new JMenuBar();
+        //  Menu
+        JMenu menu = new JMenu("File");
+        JMenuItem item0 = new JMenuItem("New");
+        JMenuItem item1 = new JMenuItem("Open");
+        JMenuItem item2 = new JMenuItem("Save");
+        item0.addActionListener(menuListener);
+        item1.addActionListener(menuListener);
+        item2.addActionListener(menuListener);
+        jFrame.setJMenuBar(bar);
+        bar.add(menu);
+        menu.add(item0);
+        menu.add(item1);
+        menu.add(item2);
 
         JPanel jpRight = new JPanel();
         jpRight.setPreferredSize(new Dimension(400, 0));
@@ -168,21 +187,18 @@ public class ClientFrame extends JFrame {
         JPanel ds = drawSpace.createDrawSpace();
         ds.setPreferredSize(new Dimension(400, 500));
         ds.setBackground(Color.white);
-//        jpLeft.add(paintBoard, BorderLayout.CENTER);
+        menuListener.setDrawSpace(ds);
+
         jpLeft.add(ds, BorderLayout.CENTER);
         jpLeft.add(buttonBoard, BorderLayout.WEST);
 
         jFrame.add(jpLeft);
         jFrame.add(jpRight);
-
         jFrame.setVisible(true);
 
         ds.addMouseMotionListener(drawListener);
         ds.addMouseListener(drawListener);
-//        paintBoard.addMouseMotionListener(drawListener);
-//        paintBoard.addMouseListener(drawListener);
 
-//        g = paintBoard.getGraphics();
         g = ds.getGraphics();
         drawListener.setG(g, pw);
         shapeList = drawListener.getShapeList();
