@@ -54,6 +54,9 @@ public class ServerThread extends Thread{
                     }
                     continue;
                 }
+                if(socketMessage.equals("FileCommond_New") && this == MyServer.serverList.get(0)){
+                    MyServer.shapeString.removeAll(MyServer.shapeString);
+                }
                 if(firstFlag){
                     if(socketMessage.indexOf("InitialName:")!=-1){
                         this.userName = socketMessage.substring(socketMessage.indexOf(":")+1);

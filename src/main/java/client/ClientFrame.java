@@ -34,6 +34,9 @@ public class ClientFrame extends JFrame {
     private String userName;
     private  DrawListener drawListener = new DrawListener();
     public static Boolean menuFlag = false;
+    //  important
+    public DrawSpace drawSpace = new DrawSpace();
+    public JPanel ds = drawSpace.createDrawSpace();
 
     public void setClient(String address, int port, String name){
                 try{
@@ -72,6 +75,9 @@ public class ClientFrame extends JFrame {
             shapeList.add(s);
         }else if(message.equals("InitialManager")){
             menuFlag = true;
+        } else if(message.equals("FileCommond_New")){
+            ClientFrame.shapeList.removeAll(ClientFrame.shapeList);
+            ds.repaint();
         }
         else{
             jTextArea1.append(message+"\n");
@@ -205,8 +211,8 @@ public class ClientFrame extends JFrame {
         buttonBoard.add(colorButton);
 
 
-        DrawSpace drawSpace = new DrawSpace();
-        JPanel ds = drawSpace.createDrawSpace();
+
+
         ds.setPreferredSize(new Dimension(400, 500));
         ds.setBackground(Color.white);
         // transmit the parameter

@@ -1,5 +1,7 @@
 package client;
 
+import com.alibaba.fastjson.JSON;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
