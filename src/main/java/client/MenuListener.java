@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class MenuListener implements ActionListener {
     private JPanel drawSpace;
     private JFrame jFrame;
+    private PrintWriter pw;
 
     public void setDrawSpace(JPanel drawSpace) {
         this.drawSpace = drawSpace;
@@ -24,6 +25,10 @@ public class MenuListener implements ActionListener {
 
     public void setjFrame(JFrame jFrame) {
         this.jFrame = jFrame;
+    }
+
+    public void setPw(PrintWriter pw) {
+        this.pw = pw;
     }
 
     @Override
@@ -45,6 +50,8 @@ public class MenuListener implements ActionListener {
                 saveFile();
             }
             if(value == 1){
+                pw.println("FileCommond_New");
+                pw.flush();
                 ClientFrame.shapeList.removeAll(ClientFrame.shapeList);
                 drawSpace.repaint();
             }

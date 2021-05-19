@@ -42,8 +42,17 @@ public class ServerThread extends Thread{
         try{
             //  get the input stream
             while((socketMessage = bufferedReader.readLine())!=null){
-                if(socketMessage.indexOf("{") != -1 && socketMessage.indexOf("\"")!=-1) {
-                    MyServer.shapeString.add(socketMessage);
+                if(socketMessage.indexOf("ManagerCommand_")!=-1){
+                    String name = socketMessage.substring(socketMessage.indexOf("_")+1);
+                    for(int i =0; i<MyServer.serverList.size();i++){
+                        ServerThread st= MyServer.serverList.get(i);
+                        if(st.userName.equals(name)){
+                            MyServer.serverList.remove(i);
+                            st.socket.close();
+                            break;
+                        }
+                    }
+                    continue;
                 }
                 if(firstFlag){
                     if(socketMessage.indexOf("InitialName:")!=-1){
@@ -61,6 +70,9 @@ public class ServerThread extends Thread{
                     firstFlag = false;
                     continue;
                 }
+                if(socketMessage.indexOf("{") != -1 && socketMessage.indexOf("\"")!=-1) {
+                    MyServer.shapeString.add(socketMessage);
+                }
                 for(int i =0; i< MyServer.serverList.size(); i++){
                     ServerThread st = MyServer.serverList.get(i);
                     if(this != st) {
@@ -74,9 +86,9 @@ public class ServerThread extends Thread{
             sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");
             Date date = new Date();
             if(this == MyServer.serverList.get(0)){
+                System.out.println("The manager have close the application");
                 for(int i=1; i<MyServer.serverList.size();i++){
                     ServerThread st = MyServer.serverList.get(i);
-                    System.out.println("The manager have close the application");
                     st.pw.println("The manager have close the application");
                     st.pw.flush();
                 }

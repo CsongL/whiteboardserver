@@ -44,6 +44,7 @@ public class ClientFrame extends JFrame {
                     showFrame();
                     jTextArea1.append("Successfully Connect..\n");
                     pw.println("InitialName:"+name);  //  this is important can not be changed because it is associated with whiteboard shown to others
+                    this.userName = name;
                     while(true){
                         String message = bufferedReader.readLine();
                         handleMessage(message);
@@ -55,6 +56,10 @@ public class ClientFrame extends JFrame {
                     System.out.println("Can not connect to the server");
                     if(jTextArea1!=null){
                         jTextArea1.append("Can not connect to the server\n");
+                    }
+                } catch (NullPointerException e){
+                    if(jTextArea1!=null){
+                        jTextArea1.append("You have been removed by the manager");
                     }
                 }
 
@@ -78,6 +83,7 @@ public class ClientFrame extends JFrame {
         // add the listener
 
         MenuListener menuListener = new MenuListener();
+
         JFrame jFrame = new JFrame("WhiteBoard");
         jFrame.setSize(1000,500);
         jFrame.setDefaultCloseOperation(3);
@@ -139,6 +145,23 @@ public class ClientFrame extends JFrame {
         });
         jpRight.add(submitButton);
 
+        JButton tickoutButton = new JButton("Tickout");
+        tickoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(menuFlag){
+                    TextFrame textFrame = new TextFrame();
+                    JFrame nameFrame = textFrame.createFrame(jFrame.getLocationOnScreen().x, jFrame.getLocationOnScreen().y);
+                    nameFrame.setVisible(true);
+                }else{
+                    JOptionPane.showMessageDialog(jFrame, "Only the manager have the right");
+                }
+
+            }
+        });
+        jpRight.add(tickoutButton);
+
+
         JPanel jpLeft = new JPanel();
         BorderLayout board = new BorderLayout();
         jpLeft.setLayout(board);
@@ -189,6 +212,7 @@ public class ClientFrame extends JFrame {
         // transmit the parameter
         menuListener.setDrawSpace(ds);
         menuListener.setjFrame(jFrame);
+        menuListener.setPw(pw);
 
         jpLeft.add(ds, BorderLayout.CENTER);
         jpLeft.add(buttonBoard, BorderLayout.WEST);
@@ -222,26 +246,37 @@ public class ClientFrame extends JFrame {
             g.drawImage(image,0,0,null);
         }
     }
-    class TextFrame extends Frame{
-        public TextFrame(int screenX, int screenY){
-            super();
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            setSize(400,200);
-            setLocation(screenX+100, screenY+100);
-            setTitle("Text Message");
+    class TextFrame extends JFrame{
+        public JFrame createFrame(int screenX, int screenY) {
+            JFrame jFrame = new JFrame();
+            jFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            jFrame.setSize(400, 200);
+            jFrame.setLocation(screenX + 100, screenY + 100);
+            jFrame.setTitle("Tickout");
 
             JPanel contentPanel = new JPanel();
-            contentPanel.setBorder(new EmptyBorder(5,5,5,5));
-            setContentPane(contentPanel);
+            contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+            contentPanel.setLayout(new BorderLayout(5, 5));
+            jFrame.setContentPane(contentPanel);
 
-            JLabel wordLabel = new JLabel("Text");
+            JPanel namePanel = new JPanel();
+            JLabel wordLabel = new JLabel("UserName");
             JTextField wordTextField = new JTextField(10);
-            contentPanel.add(wordLabel);
-            contentPanel.add(wordTextField);
-            JButton submitButton = new JButton("type");
-            submitButton.setBounds(100,100,100,100);
-            contentPanel.add(submitButton);
-            submitButton.addActionListener(drawListener);
+            namePanel.add(wordLabel);
+            namePanel.add(wordTextField);
+            contentPanel.add(namePanel, BorderLayout.CENTER);
+            JButton submitButton = new JButton("Submit");
+            submitButton.setBounds(100, 100, 100, 100);
+            contentPanel.add(submitButton, BorderLayout.SOUTH);
+            submitButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    pw.println("ManagerCommand_" + wordTextField.getText());
+                    pw.flush();
+                    jFrame.dispose();
+                }
+            });
+            return jFrame;
         }
     }
 }
