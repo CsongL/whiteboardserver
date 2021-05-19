@@ -74,9 +74,9 @@ public class ServerThread extends Thread{
             sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");
             Date date = new Date();
             if(this == MyServer.serverList.get(0)){
-                System.out.println("hh");
                 for(int i=1; i<MyServer.serverList.size();i++){
                     ServerThread st = MyServer.serverList.get(i);
+                    System.out.println("The manager have close the application");
                     st.pw.println("The manager have close the application");
                     st.pw.flush();
                 }

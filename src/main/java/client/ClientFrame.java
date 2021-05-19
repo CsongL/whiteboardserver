@@ -49,18 +49,19 @@ public class ClientFrame extends JFrame {
                         handleMessage(message);
                     }
                 } catch (UnknownHostException e) {
-                    e.printStackTrace();
+                    System.out.println("Can not find the Server");
                 } catch (IOException | ClassNotFoundException e) {
                     //  close the server there will be a problem
                     System.out.println("Can not connect to the server");
-                    jTextArea1.append("Can not connect to the server\n");
+                    if(jTextArea1!=null){
+                        jTextArea1.append("Can not connect to the server\n");
+                    }
                 }
 
         };
 
     public void handleMessage(String message) throws IOException, ClassNotFoundException {
         if(message.indexOf("{") != -1 && message.indexOf("\"")!=-1){
-            System.out.println(message);
             Shape s = JSON.parseObject(message, Shape.class);
             s.draw((Graphics2D) g);
             shapeList.add(s);
@@ -68,7 +69,6 @@ public class ClientFrame extends JFrame {
             menuFlag = true;
         }
         else{
-            System.out.println(message);
             jTextArea1.append(message+"\n");
             jTextArea1.selectAll();
         }

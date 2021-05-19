@@ -11,6 +11,10 @@ import java.net.UnknownHostException;
  */
 public class Client {
     public static void main(String[] args) {
+        if(args.length !=3){
+            System.out.println("Please input the right parameters");
+            return ;
+        }
         ClientFrame clientFrame = new ClientFrame();
         clientFrame.setClient(args[0], Integer.parseInt(args[1]), args[2]);
     }
