@@ -29,9 +29,15 @@ public class MenuListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //  get the command that indicates execute which kind of actions
+        if(!ClientFrame.menuFlag){
+            JOptionPane.showMessageDialog(jFrame,"Only the manager has the right to use the function");
+            return;
+        }
         String command = e.getActionCommand();
 
-        Object[] options = {"Yes", "No"};
+        if("Close".equals(command)){
+            System.exit(0);
+        }
         // Create a blank drawsplace
         if("New".equals(command)){
             int value = JOptionPane.showConfirmDialog(jFrame,"Do you want to save the current file?", "Warning",0,JOptionPane.QUESTION_MESSAGE);

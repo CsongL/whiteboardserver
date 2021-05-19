@@ -33,6 +33,7 @@ public class ClientFrame extends JFrame {
     private BufferedReader bufferedReader;
     private String userName;
     private  DrawListener drawListener = new DrawListener();
+    public static Boolean menuFlag = false;
 
     public static void main(String[] arguments){
        ClientFrame clientFrame = new ClientFrame();
@@ -56,6 +57,7 @@ public class ClientFrame extends JFrame {
                     e.printStackTrace();
                 } catch (IOException | ClassNotFoundException e) {
                     //  close the server there will be a problem
+                    jTextArea1.append("Can not connect to the server\n");
                     e.printStackTrace();
                 }
 
@@ -67,7 +69,10 @@ public class ClientFrame extends JFrame {
             Shape s = JSON.parseObject(message, Shape.class);
             s.draw((Graphics2D) g);
             shapeList.add(s);
-        }else{
+        }else if(message.equals("InitialManager")){
+            menuFlag = true;
+        }
+        else{
             System.out.println(message);
             jTextArea1.append(message+"\n");
             jTextArea1.selectAll();
@@ -95,14 +100,17 @@ public class ClientFrame extends JFrame {
         JMenuItem item0 = new JMenuItem("New");
         JMenuItem item1 = new JMenuItem("Open");
         JMenuItem item2 = new JMenuItem("Save");
+        JMenuItem item3 = new JMenuItem("Close");
         item0.addActionListener(menuListener);
         item1.addActionListener(menuListener);
         item2.addActionListener(menuListener);
+        item3.addActionListener(menuListener);
         jFrame.setJMenuBar(bar);
         bar.add(menu);
         menu.add(item0);
         menu.add(item1);
         menu.add(item2);
+        menu.add(item3);
 
         JPanel jpRight = new JPanel();
         jpRight.setPreferredSize(new Dimension(400, 0));
@@ -131,7 +139,7 @@ public class ClientFrame extends JFrame {
                 jTextArea2.setText("");
                 jTextArea1.append("Me:"+text + "\n");
                 jTextArea1.selectAll(); //put the scroll in the last position
-                pw.println("Message:"+text);
+                pw.println(userName+":"+text);
             }
         });
         jpRight.add(submitButton);

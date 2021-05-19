@@ -50,6 +50,10 @@ public class ServerThread extends Thread{
                         this.userName = socketMessage.substring(socketMessage.indexOf(":")+1);
                         System.out.println(this.userName);
                     }
+                    if(this == MyServer.serverList.get(0)){
+                        this.pw.println("InitialManager");
+                        this.pw.flush();
+                    }
                     for(int i=0; i < MyServer.shapeString.size(); i++){
                         this.pw.println(MyServer.shapeString.get(i));
                         this.pw.flush();
@@ -66,6 +70,9 @@ public class ServerThread extends Thread{
                 }
             }
         } catch (IOException e) {
+            SimpleDateFormat sdf = new SimpleDateFormat();
+            sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");
+            Date date = new Date();
             for(int i=0; i<MyServer.serverList.size();i++){
                 ServerThread st = MyServer.serverList.get(i);
                 if(this == st){
@@ -73,9 +80,6 @@ public class ServerThread extends Thread{
                     break;
                 }
             }
-            SimpleDateFormat sdf = new SimpleDateFormat();
-            sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");
-            Date date = new Date();
             System.out.println("Time：" + sdf.format(date)+";" + this.userName+" leaves the room");
             for(int i =0; i< MyServer.serverList.size(); i++){
                 ServerThread st = MyServer.serverList.get(i);
@@ -87,7 +91,6 @@ public class ServerThread extends Thread{
             if(MyServer.socketNumber ==0){
                 MyServer.shapeString.clear();
             }
-            e.printStackTrace();
         }
     }
 
