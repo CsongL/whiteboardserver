@@ -73,6 +73,16 @@ public class ServerThread extends Thread{
             SimpleDateFormat sdf = new SimpleDateFormat();
             sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");
             Date date = new Date();
+            if(this == MyServer.serverList.get(0)){
+                System.out.println("hh");
+                for(int i=1; i<MyServer.serverList.size();i++){
+                    ServerThread st = MyServer.serverList.get(i);
+                    st.pw.println("The manager have close the application");
+                    st.pw.flush();
+                }
+                System.exit(0);
+            }
+            //  remove the serverThread from serverList
             for(int i=0; i<MyServer.serverList.size();i++){
                 ServerThread st = MyServer.serverList.get(i);
                 if(this == st){
@@ -80,13 +90,16 @@ public class ServerThread extends Thread{
                     break;
                 }
             }
+
             System.out.println("Time：" + sdf.format(date)+";" + this.userName+" leaves the room");
+            //  tell the other client
             for(int i =0; i< MyServer.serverList.size(); i++){
                 ServerThread st = MyServer.serverList.get(i);
                 st.pw.println(this.userName+" have leave the room");
                 st.pw.flush();
 
             }
+
             MyServer.socketNumber--;
             if(MyServer.socketNumber ==0){
                 MyServer.shapeString.clear();

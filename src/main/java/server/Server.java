@@ -4,7 +4,7 @@ import java.io.IOException;
 
 /**
  * @Author: SongLin Chang
- * @Description: TODO
+ * @Description: TO send the message to other client
  * @Date: Created in 6:43 2021/5/16
  */
 public class Server {

@@ -20,7 +20,7 @@ import com.alibaba.fastjson.JSON;
 
 /**
  * @Author: SongLin Chang
- * @Description: TODO
+ * @Description: Create the Client Frame
  * @Date: Created in 13:52 2021/5/16
  */
 public class ClientFrame extends JFrame {
@@ -34,11 +34,6 @@ public class ClientFrame extends JFrame {
     private String userName;
     private  DrawListener drawListener = new DrawListener();
     public static Boolean menuFlag = false;
-
-    public static void main(String[] arguments){
-       ClientFrame clientFrame = new ClientFrame();
-       clientFrame.setClient("localhost", 1234, "Cai Meng");
-    }
 
     public void setClient(String address, int port, String name){
                 try{
@@ -57,8 +52,8 @@ public class ClientFrame extends JFrame {
                     e.printStackTrace();
                 } catch (IOException | ClassNotFoundException e) {
                     //  close the server there will be a problem
+                    System.out.println("Can not connect to the server");
                     jTextArea1.append("Can not connect to the server\n");
-                    e.printStackTrace();
                 }
 
         };
