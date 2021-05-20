@@ -86,7 +86,8 @@ public class DrawListener extends MouseAdapter implements ActionListener {
             pw.println(JSON.toJSONString(s));
         }
         if(str.equals("Text")){
-            String text = "Hello World";
+
+            String text = ClientFrame.stringTextField.getText();
             Shape s = new Shape(x1,y1,text,"Text", color);
             s.draw(g2);
             shapeList.add(s);

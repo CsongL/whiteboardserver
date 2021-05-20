@@ -34,6 +34,7 @@ public class ClientFrame extends JFrame {
     private String userName;
     private  DrawListener drawListener = new DrawListener();
     public static Boolean menuFlag = false;
+    public static JTextField stringTextField = new JTextField(10); // get the user's test
     //  important
     public DrawSpace drawSpace = new DrawSpace();
     public JPanel ds = drawSpace.createDrawSpace();
@@ -186,6 +187,16 @@ public class ClientFrame extends JFrame {
             buttonBoard.add(jButtons[i]);
             jButtons[i].addActionListener(drawListener);
         }
+        JButton textButton = new JButton("Text");
+        buttonBoard.add(textButton);
+        textButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StringFrame stringFrame = new StringFrame();
+                JFrame string = stringFrame.createFrame(jFrame.getLocationOnScreen().x, jFrame.getLocationOnScreen().y);
+                string.setVisible(true);
+            }
+        });
 
         JLabel colorLabel = new JLabel();
         colorLabel.setBackground(Color.BLACK);
@@ -250,6 +261,32 @@ public class ClientFrame extends JFrame {
         }
         public void drawImages(BufferedImage image) {
             g.drawImage(image,0,0,null);
+        }
+    }
+    class StringFrame extends JFrame{
+        public JFrame createFrame(int screenX, int screenY) {
+            JFrame jFrame = new JFrame();
+            jFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            jFrame.setSize(400, 200);
+            jFrame.setLocation(screenX + 100, screenY + 100);
+            jFrame.setTitle("Text");
+
+            JPanel contentPanel = new JPanel();
+            contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+            contentPanel.setLayout(new BorderLayout(5, 5));
+            jFrame.setContentPane(contentPanel);
+
+            JPanel namePanel = new JPanel();
+            JLabel wordLabel = new JLabel("Content");
+            namePanel.add(wordLabel);
+            namePanel.add(stringTextField);
+            contentPanel.add(namePanel, BorderLayout.CENTER);
+            JButton submitButton = new JButton("Text");
+            submitButton.setBounds(100, 100, 100, 100);
+            contentPanel.add(submitButton, BorderLayout.SOUTH);
+            submitButton.addActionListener(drawListener);
+
+            return jFrame;
         }
     }
     class TextFrame extends JFrame{
