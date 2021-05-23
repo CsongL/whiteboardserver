@@ -38,10 +38,11 @@ public class ClientFrame extends JFrame {
     //  important
     public DrawSpace drawSpace = new DrawSpace();
     public JPanel ds = drawSpace.createDrawSpace();
+    private Socket socket;
 
     public void setClient(String address, int port, String name){
                 try{
-                    Socket socket = new Socket(address, port);
+                    this.socket = new Socket(address, port);
                     InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
                     bufferedReader = new BufferedReader(inputStreamReader);
                     pw = new PrintWriter(socket.getOutputStream(), true);
@@ -66,11 +67,13 @@ public class ClientFrame extends JFrame {
                         jTextArea1.append("You have been removed by the manager");
                     }
                 }
-
         };
 
     public void handleMessage(String message) throws IOException, ClassNotFoundException {
-        if(message.indexOf("{") != -1 && message.indexOf("\"")!=-1){
+        if(message.equals("Invalid username")){
+            jTextArea1.append("Invalid username. Please use another username to log in\n");
+            socket.close();
+        }else if(message.indexOf("{") != -1 && message.indexOf("\"")!=-1){
             Shape s = JSON.parseObject(message, Shape.class);
             s.draw((Graphics2D) g);
             shapeList.add(s);
@@ -163,7 +166,6 @@ public class ClientFrame extends JFrame {
                 }else{
                     JOptionPane.showMessageDialog(jFrame, "Only the manager have the right");
                 }
-
             }
         });
         jpRight.add(tickoutButton);

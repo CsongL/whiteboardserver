@@ -37,6 +37,15 @@ public class ServerThread extends Thread{
     public PrintWriter getPw() {
         return pw;
     }
+    public Boolean isUniqueName(String uName){
+        for(int i =0; i<MyServer.serverList.size(); i++){
+            ServerThread st = MyServer.serverList.get(i);
+            if(this != st && st.userName.equals(uName)){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void run() {
         try{
@@ -44,7 +53,7 @@ public class ServerThread extends Thread{
             while((socketMessage = bufferedReader.readLine())!=null){
                 if(socketMessage.indexOf("ManagerCommand_")!=-1){
                     String name = socketMessage.substring(socketMessage.indexOf("_")+1);
-                    for(int i =0; i<MyServer.serverList.size();i++){
+                    for(int i =1; i<MyServer.serverList.size();i++){
                         ServerThread st= MyServer.serverList.get(i);
                         if(st.userName.equals(name)){
                             MyServer.serverList.remove(i);
@@ -60,6 +69,11 @@ public class ServerThread extends Thread{
                 if(firstFlag){
                     if(socketMessage.indexOf("InitialName:")!=-1){
                         this.userName = socketMessage.substring(socketMessage.indexOf(":")+1);
+                        if(!isUniqueName(userName)){
+                            pw.println("Invalid username");
+                            pw.flush();
+                            break;
+                        }
                         System.out.println(this.userName);
                     }
                     if(this == MyServer.serverList.get(0)){
