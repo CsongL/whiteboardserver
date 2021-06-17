@@ -19,10 +19,10 @@ V
 V
 &src/main/java/client/DrawListener.java,1\5\150325b710a6abd1fc4cebc2ff546bccf3bc5548
 P
- src/main/java/client/Client.java,c\5\c5c2abc05e75daf87e5d896f0c1528ea106af1a0
-P
  src/main/java/server/Server.java,4\c\4c405aa622276106ee9ef8c3a2fbee4e76dcafbb
 V
 &src/main/java/server/ServerThread.java,a\7\a7fea2d6d2dea148c337ca45778eed26ad3acf51
 R
 "src/main/java/server/MyServer.java,7\c\7c66892ac52b1984cc1d87e6411c7c03e32d6229
+P
+ src/main/java/client/Client.java,c\5\c5c2abc05e75daf87e5d896f0c1528ea106af1a0

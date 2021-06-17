@@ -1,3 +1,4 @@
 
 *.class
 *.idea
+.idea/sonarlint/issuestore/index.pb
